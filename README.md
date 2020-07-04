@@ -17,5 +17,18 @@ The store contains 1) a state tree and 3 ways to interact with the state tree.
 - Update the state
 
 # functions
+
 ## createStore
-Returns a store, and 3 functions to 1) get the state 2) listen for changes 3) update the state
+### get a new store
+`let store = createStore()`
+When envoked, it returns a store with 3 functions to 1) get the state 2) listen for changes 3) update the state
+
+### get the state
+`store.getState()`
+
+### listen for state changes
+`store.subscribe(<CALLBACK_FUNC>)`
+The subscribe method on a store can be called multiple times with different c s.
+To unsubscribe a CALLBACK_FUNC, invoke the return value of a subscribe method.
+
+Internally, all the <CALLBACK_FUNC>s passed in as params to the subscribe function call will be tracked in the store's internal listerners array.
