@@ -14,9 +14,9 @@ A state tree is a single object that stores all the data for an application.
 The store contains 1) a state tree and 3 ways to interact with the state tree.
 
 3 ways to interact with state tree includes:
-- Get the state
-- Listen for changes
-- Update the state
+- Get the state - getState
+- Listen for changes - subscribe
+- Update the state - dispatch
 
 ## action 
 An action is a plain JS object with a type property to indicate what types of action occured. It can also contain other properties with extra data. All actions must have a type property.
@@ -43,15 +43,18 @@ const toggleItem = id => ({
 A reducer is a pure function that returns a new state based on an action and the current state
 
 ## dispatch 
-Dispatch is responsible for updating the state in the store. It receives an action and then sets the state to be the return value of the reducer function call invocation. 
+Dispatch dispatches an action. It is a method on the state instance. 
+The dispatch method is responsible for updating the state in the store. It receives an action and then sets the state to be the return value of the reducer function call invocation.
 It also invokes all the listeners.
 
 # code walk through
 
 ## createStore
 ### get a new store
-`let store = createStore()`
+`let store = createStore(reducer)`
 When envoked, it returns a store with 3 functions to 1) get the state 2) listen for changes 3) update the state
+
+It returns a user defined reducer, which takes in the current state, and an action and returns a new state. The reducer is used in the dispatch method a newly created store.  
 
 ### get the state
 `store.getState()`

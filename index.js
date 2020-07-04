@@ -1,19 +1,5 @@
-// This is the pure function that will return new states
-// It takes in two args: the current sate and an action
-// It is a reducer
-function todos (state = [], action) {
-    switch (action.type) {
-
-        case 'ADD_TODO':
-            // Array.concat returns a new array 
-            return state.concat([action.todo])
-
-        default:
-            return state
-    }
-}
-
-function createStore () {
+//Library code
+function createStore (reducer) {
     // the store shuld have four parts
     // 1. Hold the state
     // 2. Get the State
@@ -34,7 +20,7 @@ function createStore () {
     }
 
     const dispatch = (action) => {
-        state = todos(state, action)
+        state = reducer(state, action)
         listeners.forEach((listeners) => listener())
     }
     return {
@@ -44,8 +30,26 @@ function createStore () {
     }
 }
 
-const store = createStore()   
+// App code
+// This is the pure function that will return new states
+// It takes in two args: the current sate and an action
+// It is a reducer
+function todos (state = [], action) {
+    switch (action.type) {
 
+        case 'ADD_TODO':
+            // Array.concat returns a new array 
+            return state.concat([action.todo])
+
+        default:
+            return state
+    }
+}
+
+//instantiate a new store
+const store = createStore(todos)   
+
+//add a listener to listen for changes
 store.subscribe(()=>{
     console.log('The new state is: ', store.getState())
 })
