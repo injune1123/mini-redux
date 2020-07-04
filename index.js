@@ -21,7 +21,7 @@ function createStore (reducer) {
 
     const dispatch = (action) => {
         state = reducer(state, action)
-        listeners.forEach((listeners) => listener())
+        listeners.forEach((listener) => listener())
     }
     return {
         getState,
@@ -53,3 +53,13 @@ const store = createStore(todos)
 store.subscribe(()=>{
     console.log('The new state is: ', store.getState())
 })
+
+store.dispatch({
+    type: 'ADD_TODO',
+    todo: {
+        id: 0,
+        name: 'Learn Redux',
+        complete: false
+    }
+})
+
