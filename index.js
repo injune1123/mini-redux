@@ -1,3 +1,18 @@
+// This is the pure function that will return new states
+// It takes in two args: the current sate and an action
+// It is a reducer
+function todos (state = [], action) {
+    switch (action.type) {
+
+        case 'ADD_TODO':
+            // Array.concat returns a new array 
+            return state.concat([action.todo])
+
+        default:
+            return state
+    }
+}
+
 function createStore () {
     // the store shuld have four parts
     // 1. Hold the state
@@ -18,9 +33,14 @@ function createStore () {
         }
     }
 
+    const dispatch = (action) => {
+        state = todos(state, action)
+        listeners.forEach((listeners) => listener())
+    }
     return {
         getState,
-        subscribe
+        subscribe,
+        dispatch
     }
 }
 
