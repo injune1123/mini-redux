@@ -147,7 +147,7 @@
             case TOGGLE_GOAL:
                 // Array.map returns a new array 
                 return state.map(
-                    (goal) => goal.id !== action.id ? todo: Object.assign({}, todo, {complete: !goal.complete})
+                    (goal) => goal.id !== action.id ? goal: Object.assign({}, goal, {complete: !goal.complete})
                 )
             default:
                 return state
@@ -238,7 +238,8 @@
         input.value = ''
         store.dispatch(addGoalAction({
             id: generateId(),
-            name
+            name,
+            complete: false 
         }))
     }
     // listen for button clicks
@@ -249,6 +250,10 @@
         const todoListItemNode = document.createElement('li')        
         const todoText = document.createTextNode(todo.name)
         todoListItemNode.appendChild(todoText)
+        todoListItemNode.style.textDecoration = todo.complete ? 'line-through' : 'none'
+        todoListItemNode.addEventListener('click', () => {
+            store.dispatch(toggleTodoAction(todo.id))
+        })
 
         document.getElementById('todos')
             .appendChild(todoListItemNode)
@@ -258,7 +263,10 @@
         const goalListItemNode = document.createElement('li')
         const goalText = document.createTextNode(goal.name)
         goalListItemNode.appendChild(goalText)
-
+        goalListItemNode.style.textDecoration = goal.complete ? 'line-through' : 'none'
+        goalListItemNode.addEventListener('click', () => {
+            store.dispatch(toggleGoalAction(goal.id))
+        })
         document.getElementById('goals')
             .appendChild(goalListItemNode)
     } 
