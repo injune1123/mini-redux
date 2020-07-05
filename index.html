@@ -167,6 +167,13 @@
 
     //add a listener to listen for changes
     store.subscribe(()=>{
+        const { goals, todos } = store.getState()
+
+        document.getElementById('todos').innerHTML = ''
+        document.getElementById('goals').innerHTML = ''
+        
+        todos.forEach(addTodoToDOM)
+        goals.forEach(addGoalToDOM)
         console.log('The new state is: ', store.getState())
     })
 
@@ -210,6 +217,8 @@
 
 
     // store.dispatch(removeGoalAction(0))
+
+    //DOM CODE
     function addTodo () {
         const input = document.getElementById('todo')
         const name = input.value
@@ -224,7 +233,7 @@
 
     function addGoal () {
         const input = document.getElementById('goal');
-        const name = input.vaule;
+        const name = input.value;
         //reset
         input.value = ''
         store.dispatch(addGoalAction({
@@ -235,6 +244,25 @@
     // listen for button clicks
     document.getElementById('todoBtn').addEventListener('click', addTodo)
     document.getElementById('goalBtn').addEventListener('click', addGoal)
+
+    function addTodoToDOM (todo) {
+        const todoListItemNode = document.createElement('li')        
+        const todoText = document.createTextNode(todo.name)
+        todoListItemNode.appendChild(todoText)
+
+        document.getElementById('todos')
+            .appendChild(todoListItemNode)
+    }
+
+    function addGoalToDOM (goal) {
+        const goalListItemNode = document.createElement('li')
+        const goalText = document.createTextNode(goal.name)
+        goalListItemNode.appendChild(goalText)
+
+        document.getElementById('goals')
+            .appendChild(goalListItemNode)
+    } 
+    
     </script>
 </body>
 </html>
