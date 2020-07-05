@@ -83,3 +83,8 @@ A reducer, which must be a pure function, takes in two arguments: 1) the current
 
 ## dispatch 
 Dispatch is responsible for updating the state in the store. It receives an action and then sets the state to be the return value of the reducer function call invocation. 
+
+# Best practices in app code
+- Use const varibles for action types
+- Abstract actions into action creators. This follows the DRY principle.
+
