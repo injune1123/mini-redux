@@ -48,6 +48,10 @@ The dispatch method is responsible for updating the state in the store. It recei
 It also invokes all the listeners.
 
 # code walk through
+The code can be divided into to categories: library code, and app code. 
+
+The library code is the core of mini-redux
+The app code provides an example of how to utilize mini-redux in real world applications
 
 ## createStore
 ### get a new store
