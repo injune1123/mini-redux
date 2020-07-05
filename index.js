@@ -41,7 +41,7 @@ const REMOVE_GOAL = 'REMOVE_GOAL';
 const TOGGLE_GOAL = 'TOGGLE_GOAL';
 
 // action creators
-function addTodoAction () {
+function addTodoAction (todo) {
   return {
     type: ADD_TODO,
     todo
