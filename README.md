@@ -1,10 +1,14 @@
 # mini-redux
+## What is mini-redux?
 This is a mini redux. It is a part of the React Nano degree from Udacity.
 
 #What does mini-redux do?
 It contains the core functinalites of the redux library. Similarly, it can serve as a library, which moves all app states into a central location and provides predictable state management.
 
 mini-redux, just like redux is a predictable state container for JavaScript apps.
+
+## What mini-redux is not?
+It does not support all the APIs. For example. it does not have the (combined-reducers)[https://github.com/reduxjs/redux/blob/9d3273846aa8906d38890c410b62fb09a4992018/src/combineReducers.ts#L139]
 
 # Project Setup
 You just need to open the html files in a browser. That's it.
