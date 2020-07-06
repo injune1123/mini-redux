@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Example UI with vanilla JS </title>
+    <title>Example UI with redux </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
 </head>
 <body>
     <div></div>
@@ -23,37 +24,6 @@
 
     </div>
     <script type="text/javascript">
-        //Library code
-    function createStore (reducer) {
-        // the store shuld have four parts
-        // 1. Hold the state
-        // 2. Get the State
-        // 3. Listen to changes on the state
-        // 4. Update the state
-
-        let state
-
-        let listeners = []
-
-        const getState = () => state
-
-        const subscribe = (callbackFunc) => {
-            listeners.push(callbackFunc)
-            return () => {
-                listeners = listeners.filter((cb) => cb !== callbackFunc )
-            }
-        }
-
-        const dispatch = (action) => {
-            state = reducer(state, action)
-            listeners.forEach((listener) => listener())
-        }
-        return {
-            getState,
-            subscribe,
-            dispatch
-        }
-    }
 
     // App code
     function generateId () {
@@ -154,16 +124,8 @@
         }
     }
 
-    // the root reducer
-    function app (state = {}, action) {
-        return {
-            todos: todos(state.todos, action),
-            goals: goals(state.goals, action)
-        }
-    }
-
     //instantiate a new store
-    const store = createStore(app)   
+    const store = Redux.createStore(Redux.combineReducers({todos, goals}))   
 
     //add a listener to listen for changes
     store.subscribe(()=>{
