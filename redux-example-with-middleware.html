@@ -124,6 +124,19 @@
         }
     }
 
+    function checkAndDispatch (store, action) {
+        if (action.type === ADD_TODO 
+        && action.todo.name.toLowerCase().includes('bitcoin')
+        ) {
+            return alert('That\'s a bad idea!')
+        }
+        if (action.type === ADD_GOAL
+        && action.goal.name.toLowerCase().includes('bitcoin')
+        ) {
+            return alert('That\'s a bad idea!')
+        }
+        store.dispatch(action)
+    }
     //instantiate a new store
     const store = Redux.createStore(Redux.combineReducers({todos, goals}))   
 
@@ -145,7 +158,7 @@
         const name = input.value
         //reset
         input.value = ''
-        store.dispatch(addTodoAction({
+        checkAndDispatch(store, addTodoAction({
             id: generateId(),
             name,
             complete: false 
@@ -157,7 +170,7 @@
         const name = input.value;
         //reset
         input.value = ''
-        store.dispatch(addGoalAction({
+        checkAndDispatch(store, addGoalAction({
             id: generateId(),
             name,
             complete: false 
@@ -178,13 +191,13 @@
         const todoListItemNode = document.createElement('li')        
         const todoText = document.createTextNode(todo.name)
         const removeBtn = createRemoveButton(() => {
-            store.dispatch(removeTodoAction(todo.id))
+            checkAndDispatch(store, removeTodoAction(todo.id))
         })
         todoListItemNode.appendChild(todoText)
         todoListItemNode.appendChild(removeBtn)
         todoListItemNode.style.textDecoration = todo.complete ? 'line-through' : 'none'
         todoListItemNode.addEventListener('click', () => {
-            store.dispatch(toggleTodoAction(todo.id))
+            checkAndDispatch(store,toggleTodoAction(todo.id))
         })
 
         document.getElementById('todos')
@@ -195,13 +208,13 @@
         const goalListItemNode = document.createElement('li')
         const goalText = document.createTextNode(goal.name)
         const removeBtn = createRemoveButton(() => {
-            store.dispatch(removeGoalAction(goal.id))
+            checkAndDispatch(store, removeGoalAction(goal.id))
         })
         goalListItemNode.appendChild(goalText)
         goalListItemNode.appendChild(removeBtn)
         goalListItemNode.style.textDecoration = goal.complete ? 'line-through' : 'none'
         goalListItemNode.addEventListener('click', () => {
-            store.dispatch(toggleGoalAction(goal.id))
+            checkAndDispatch(store, toggleGoalAction(goal.id))
         })
         document.getElementById('goals')
             .appendChild(goalListItemNode)
