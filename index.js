@@ -92,13 +92,13 @@ function todos (state = [], action) {
     switch (action.type) {
 
         case ADD_TODO:
-            // Array.concat returns a new array 
+            // Array.concat returns a new array
             return state.concat([action.todo])
         case REMOVE_TODO:
-            // Array.filter returns a new array 
+            // Array.filter returns a new array
             return state.filter((todo) => todo.id !== action.id)
         case TOGGLE_TODO:
-            // Array.map returns a new array 
+            // Array.map returns a new array
             return state.map(
                 (todo) => todo.id !== action.id ? todo: Object.assign({}, todo, {complete: !todo.complete})
             )
@@ -112,13 +112,13 @@ function goals (state = [], action) {
     switch (action.type) {
 
         case ADD_GOAL:
-            // Array.concat returns a new array 
+            // Array.concat returns a new array
             return state.concat([action.goal])
         case REMOVE_GOAL:
-            // Array.filter returns a new array 
+            // Array.filter returns a new array
             return state.filter((goal) => goal.id !== action.id)
         case TOGGLE_GOAL:
-            // Array.map returns a new array 
+            // Array.map returns a new array
             return state.map(
                 (goal) => goal.id !== action.id ? todo: Object.assign({}, todo, {complete: !goal.complete})
             )
@@ -136,7 +136,7 @@ function app (state = {}, action) {
 }
 
 //instantiate a new store
-const store = createStore(app)   
+const store = createStore(app)
 
 //add a listener to listen for changes
 store.subscribe(()=>{
@@ -168,7 +168,7 @@ store.dispatch(removeTodoAction(1))
 
 store.dispatch(toggleTodoAction(0))
 
-  
+
 store.dispatch(addGoalAction({
     id: 0,
     name: 'Learn Redux'

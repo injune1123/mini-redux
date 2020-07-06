@@ -89,13 +89,13 @@
         switch (action.type) {
 
             case ADD_TODO:
-                // Array.concat returns a new array 
+                // Array.concat returns a new array
                 return state.concat([action.todo])
             case REMOVE_TODO:
-                // Array.filter returns a new array 
+                // Array.filter returns a new array
                 return state.filter((todo) => todo.id !== action.id)
             case TOGGLE_TODO:
-                // Array.map returns a new array 
+                // Array.map returns a new array
                 return state.map(
                     (todo) => todo.id !== action.id ? todo: Object.assign({}, todo, {complete: !todo.complete})
                 )
@@ -109,13 +109,13 @@
         switch (action.type) {
 
             case ADD_GOAL:
-                // Array.concat returns a new array 
+                // Array.concat returns a new array
                 return state.concat([action.goal])
             case REMOVE_GOAL:
-                // Array.filter returns a new array 
+                // Array.filter returns a new array
                 return state.filter((goal) => goal.id !== action.id)
             case TOGGLE_GOAL:
-                // Array.map returns a new array 
+                // Array.map returns a new array
                 return state.map(
                     (goal) => goal.id !== action.id ? goal: Object.assign({}, goal, {complete: !goal.complete})
                 )
@@ -125,7 +125,7 @@
     }
 
     //instantiate a new store
-    const store = Redux.createStore(Redux.combineReducers({todos, goals}))   
+    const store = Redux.createStore(Redux.combineReducers({todos, goals}))
 
     //add a listener to listen for changes
     store.subscribe(()=>{
@@ -133,12 +133,12 @@
 
         document.getElementById('todos').innerHTML = ''
         document.getElementById('goals').innerHTML = ''
-        
+
         todos.forEach(addTodoToDOM)
         goals.forEach(addGoalToDOM)
         console.log('The new state is: ', store.getState())
     })
-    
+
     //DOM CODE
     function addTodo () {
         const input = document.getElementById('todo')
@@ -148,7 +148,7 @@
         store.dispatch(addTodoAction({
             id: generateId(),
             name,
-            complete: false 
+            complete: false
         }))
     }
 
@@ -160,7 +160,7 @@
         store.dispatch(addGoalAction({
             id: generateId(),
             name,
-            complete: false 
+            complete: false
         }))
     }
     // listen for button clicks
@@ -175,7 +175,7 @@
     }
 
     function addTodoToDOM (todo) {
-        const todoListItemNode = document.createElement('li')        
+        const todoListItemNode = document.createElement('li')
         const todoText = document.createTextNode(todo.name)
         const removeBtn = createRemoveButton(() => {
             store.dispatch(removeTodoAction(todo.id))
@@ -205,8 +205,8 @@
         })
         document.getElementById('goals')
             .appendChild(goalListItemNode)
-    } 
-    
+    }
+
     </script>
 </body>
 </html>
