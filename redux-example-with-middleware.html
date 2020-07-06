@@ -125,6 +125,7 @@
     }
 
     //currying
+    //middleware 1: prevent any bitcoin realted goals or todos
     const checker = (store) => (next) => (action) => {
         //it has access to store, next, and action
         if (action.type === ADD_TODO
@@ -139,10 +140,17 @@
         }
         return next(action)
     }
-
-
+    //middleware 2: log out the action and the state after the atcion is dispatched
+    const logger = (store) => (next) => (action) => {
+        console.group(action.type)
+            console.log('The action: ', action)
+            const result = next(action)
+            console.log('The new state: ', store.getState())
+        console.groupEnd()
+        return result
+    }
     //instantiate a new store
-    const store = Redux.createStore(Redux.combineReducers({todos, goals}), Redux.applyMiddleware(checker))
+    const store = Redux.createStore(Redux.combineReducers({todos, goals}), Redux.applyMiddleware(checker, logger))
 
     //add a listener to listen for changes
     store.subscribe(()=>{
@@ -153,7 +161,7 @@
 
         todos.forEach(addTodoToDOM)
         goals.forEach(addGoalToDOM)
-        console.log('The new state is: ', store.getState())
+        // console.log('The new state is: ', store.getState())
     })
 
     //DOM CODE
