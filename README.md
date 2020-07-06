@@ -48,6 +48,12 @@ The dispatch method is responsible for updating the state in the store. It recei
 It also invokes all the listeners.
 
 # code walk through
+There are 3 files in this repo:
+- index.js : core code of mini-redux
+- example.html : an example of using mini-redux with plain JS
+- redux-example.html: Almost identical to `example.html`, but it swaps out mini-redux with Redux
+
+## index.js
 The code can be divided into to categories: library code, and app code. 
 
 The library code is the core of mini-redux
