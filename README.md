@@ -6,6 +6,9 @@ It contains the core functinalites of the redux library. Similarly, it can serve
 
 mini-redux, just like redux is a predictable state container for JavaScript apps.
 
+# Project Setup
+You just need to open the html files in a browser. That's it.
+
 # main concepts
 ## state tree
 A state tree is a single object that stores all the data for an application.
