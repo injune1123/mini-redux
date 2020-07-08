@@ -128,6 +128,15 @@
         }
     }
 
+    function loading (state = true, action) {
+        switch(action.type) {
+            case RECEIVE_DATA:
+                return false
+            default:
+                return state
+        }
+    }
+
     //currying
     //middleware 1: prevent any bitcoin realted goals or todos
     const checker = (store) => (next) => (action) => {
@@ -154,7 +163,7 @@
         return result
     }
     //instantiate a new store
-    const store = Redux.createStore(Redux.combineReducers({todos, goals}), Redux.applyMiddleware(checker, logger))
+    const store = Redux.createStore(Redux.combineReducers({todos, goals, loading}), Redux.applyMiddleware(checker, logger))
 
     </script>
 
@@ -273,7 +282,11 @@
             }
             render() {
                 const { store } = this.props
-                const { todos, goals } = store.getState()
+                const { todos, goals, loading } = store.getState()
+
+                if (loading === true) {
+                     return <h3>Loading</h3>
+                }
                 return (
                     <div>
                         <Todos todos={todos} store={this.props.store}/>
