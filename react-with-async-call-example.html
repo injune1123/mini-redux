@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/react@16.3.0-alpha.1/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16.3.0-alpha.1/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://tylermcginnis.com/goals-todos-api/index.js"></script>
 </head>
 <body>
 
@@ -26,6 +27,7 @@
     const ADD_GOAL = 'ADD_GOAL';
     const REMOVE_GOAL = 'REMOVE_GOAL';
     const TOGGLE_GOAL = 'TOGGLE_GOAL';
+    const RECEIVE_DATA = 'RECEIVE_DATA';
 
     // action creators
     function addTodoAction (todo) {
@@ -70,6 +72,14 @@
     }
     }
 
+    function receiveDataAction (todos, goals) {
+    return {
+        type: RECEIVE_DATA,
+        todos,
+        goals
+    }
+    }
+
     // action creators
 
     // This is the pure function that will return new states
@@ -89,6 +99,8 @@
                 return state.map(
                     (todo) => todo.id !== action.id ? todo: Object.assign({}, todo, {complete: !todo.complete})
                 )
+            case RECEIVE_DATA:
+                return action.todos
             default:
                 return state
         }
@@ -109,6 +121,8 @@
                 return state.map(
                     (goal) => goal.id !== action.id ? goal: Object.assign({}, goal, {complete: !goal.complete})
                 )
+            case RECEIVE_DATA:
+                return action.goals
             default:
                 return state
         }
@@ -250,6 +264,12 @@
             componentDidMount () {
                 const { store } = this.props
                 store.subscribe(()=> this.forceUpdate())
+                Promise.all([
+                    API.fetchTodos(),
+                    API.fetchGoals()
+                    ]).then(([ todos, goals ]) => {
+                        store.dispatch(receiveDataAction(goals, todos))
+                })
             }
             render() {
                 const { store } = this.props
