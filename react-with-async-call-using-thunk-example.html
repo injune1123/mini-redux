@@ -30,7 +30,7 @@
     const TOGGLE_GOAL = 'TOGGLE_GOAL';
     const RECEIVE_DATA = 'RECEIVE_DATA';
 
-    // action creators
+    // action creators that returns an obj
     function addTodoAction (todo) {
     return {
         type: ADD_TODO,
@@ -81,6 +81,7 @@
     }
     }
 
+    // action creators that returns a function
     function handleDeleteTodo (todo) {
 
         return (dispatch) => {
@@ -93,11 +94,56 @@
         }
     }
 
-    // action creators
+    function handleAddGoal (name, cb) {
+        return (dispatch) => {
+            API.saveGoal(name)
+                .then((goal)=>{
+                    dispatch(addGoalAction(goal))
+                    cb()
+                })
+                .catch(()=>{
+                    alert('There was an error. Try again.')
+                })
+        }
+    }
 
-    // This is the pure function that will return new states
-    // It takes in two args: the current sate and an action
-    // It is a reducer
+    function handleDeleteGoal (goal) {
+        return (dispatch) => {
+            dispatch(removeGoalAction(goal.id))
+
+            return API.deleteGoal(goal.id).catch(()=>{
+                dispatch(addGoalAction(goal))
+                alert('An error occurred. Try again.')
+            })
+        }
+    }
+
+    function handleAddTodo (name, cb) {
+        return (dispatch) => {
+            return API.saveTodo(name)
+                    .then((todo)=>{
+                        dispatch(addTodoAction(todo))
+                        cb()
+                    })
+                    .catch(()=>{
+                        alert('There was an error. Try again.')
+                    })
+        }
+    }
+
+    function handleToggleTodo (id) {
+        return (dispatch) => {
+            dispatch(toggleTodoAction(id))
+                API.saveTodoToggle(id).catch(()=>{
+                    dispatch(toggleTodoAction(id))
+                    alert('An error occurred. Try again.')
+                })
+        }
+    }
+
+    // Reducers
+    // These are pure functions that will return new states
+    // Each function takes in two args: the current sate and an action
     function todos (state = [], action) {
         switch (action.type) {
 
@@ -150,7 +196,8 @@
         }
     }
 
-    //currying
+    // middlewares
+    //Coding pattern: currying
     //middleware 1: prevent any bitcoin realted goals or todos
     const checker = (store) => (next) => (action) => {
         //it has access to store, next, and action
@@ -175,6 +222,7 @@
         console.groupEnd()
         return result
     }
+
     //instantiate a new store
     const store = Redux.createStore(Redux.combineReducers({todos, goals, loading}), Redux.applyMiddleware(ReduxThunk.default, checker, logger))
 
@@ -182,6 +230,7 @@
 
 
     <script type='text/babel'>
+        // UI code React
         function List (props) {
             return (
                 <ul>
@@ -205,14 +254,11 @@
         class Todos extends React.Component {
             addItem = (e) => {
                 e.preventDefault()
-                API.saveTodo(this.input.value)
-                    .then((todo)=>{
-                        this.props.store.dispatch(addTodoAction(todo))
-                        this.input.value = ''
-                    })
-                    .catch(()=>{
-                        alert('There was an error. Try again.')
-                    })
+
+                this.props.store.dispatch(handleAddTodo(
+                    this.input.value,
+                    () => this.input.value = ""
+                ))
             }
 
             removeItem = (todo) => {
@@ -220,11 +266,7 @@
             }
 
             toggleItem = (id) => {
-                this.props.store.dispatch(toggleTodoAction(id))
-                API.saveTodoToggle(id).catch(()=>{
-                    this.props.store.dispatch(toggleTodoAction(id))
-                    alert('An error occurred. Try again.')
-                })
+                this.props.store.dispatch(handleToggleTodo(id))
             }
             render() {
                 return (
@@ -249,26 +291,15 @@
         class Goals extends React.Component {
             addItem = (e) => {
                 e.preventDefault()
-                this.props.store.dispatch(handleAddGoal(this.input.value, () => {
-                    () => this.input.value = ''
-                }))
-                API.saveGoal(this.inputRef.value)
-                    .then((goal)=>{
-                        this.props.store.dispatch(addGoalAction(goal))
-                        this.inputRef.value = ''
-                    })
-                    .catch(()=>{
-                        alert('There was an error. Try again.')
-                    })
+
+                this.props.store.dispatch(handleAddGoal(
+                    this.input.value,
+                    () => {() => this.input.value = ''}
+                ))
             }
 
             removeItem = (goal) => {
-                this.props.store.dispatch(removeGoalAction(goal.id))
-
-                return API.deleteGoal(goal.id).catch(()=>{
-                    this.props.store.dispatch(addGoalAction(goal))
-                    alert('An error occurred. Try again.')
-                })
+                this.props.store.dispatch(handleDeleteGoal(goal))
             }
 
             toggleItem = (id) => {
@@ -281,7 +312,7 @@
                         <input
                         type="text"
                         placeholder="Add Goal"
-                        ref = {(input) => this.inputRef = input}
+                        ref = {(input) => this.input = input}
                         />
                         <button onClick={this.addItem}>Add Goal</button>
                         <List
