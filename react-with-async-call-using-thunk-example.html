@@ -141,6 +141,16 @@
         }
     }
 
+    function handleInitialData () {
+        return (dispatch) => {
+            return Promise.all([
+                    API.fetchTodos(),
+                    API.fetchGoals()
+                    ]).then(([ todos, goals ]) => {
+                        dispatch(receiveDataAction(goals, todos))
+                })
+        }
+    }
     // Reducers
     // These are pure functions that will return new states
     // Each function takes in two args: the current sate and an action
@@ -328,13 +338,10 @@
         class App extends React.Component {
             componentDidMount () {
                 const { store } = this.props
+
+                store.dispatch(handleInitialData())
+
                 store.subscribe(()=> this.forceUpdate())
-                Promise.all([
-                    API.fetchTodos(),
-                    API.fetchGoals()
-                    ]).then(([ todos, goals ]) => {
-                        store.dispatch(receiveDataAction(goals, todos))
-                })
             }
             render() {
                 const { store } = this.props
